@@ -9,6 +9,17 @@ employeesController.getAllEmployees = async (req,res) => {
     res.json(movies);
 }
 
+// INSERT
+employeesController.insertEmployees = async (req,res) => {
+  const { name, email, password, telephone, address,dui } = req.body;
+  
+  // Save everything in the DB.
+  const newEmployee = new employeeModel({name, email, password, telephone, address,dui})
+  await newEmployee.save();
+
+  res.json({message: "Employee saved! "})
+}
+
 // DELETE
 employeesController.deleteEmployees = async (req, res) => {
     const deletedemployees = await employeeModel.findByIdAndDelete(req.params.id);
