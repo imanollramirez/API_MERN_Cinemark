@@ -10,8 +10,8 @@ registerCostumersController.register = async(req, res)=> {
     const { name,email,password,telephone,address, dui } = req.body;
 
     try {
-        // Varificar si el cliente ya existe
-        const existingCostumer = await clientsModel.findOne({ email });
+        // Varificar si el costumere ya existe
+        const existingCostumer = await costumersModel.findOne({ email });
         if (existingCostumer) {
           return res.json({ message: "Costumer already exists!" });
         }
@@ -20,7 +20,7 @@ registerCostumersController.register = async(req, res)=> {
         const passwordHash = await bcryptjs.hash(password, 10);
     
         // Guardamos en la base de datos
-        const newCostumer = new clientsModel({
+        const newCostumer = new costumersModel({
             name,email,password: passwordHash,telephone,address, dui
         });
     
@@ -68,14 +68,48 @@ registerCostumersController.register = async(req, res)=> {
         //3- Envio del correo
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) console.log("error" + error);
-          res.json({ message: "Email sent" });
+          res.json({ message: "Email sent!" });
         });
     
-        res.json({ message: "Client registered, Please verify your email" });
+        res.json({ message: "Costumer registered, Please verify your email!" });
       } catch (error) {
         res.json({ message: "error" + error });
       }
     };
+
+    registerCostumersController.verifyCodeEmail = async (req, res) => {
+        const { verficationCode } = req.body;
+
+        const token = req.cookies.verificationToken;
+      
+        if (!token) {
+          return res.json({ message: "Please register your account first!" });
+        }
+      
+        try {
+          
+          const decoded = jsonwebtoken.verify(token, config.JWT.secret);
+          const { email, verficationCode: storedCode } = decoded;
+      
+          if (verficationCode !== storedCode) {
+            return res.json({ message: "Invalid verification code!" });
+          }
+      
+          const costumer = await costumersModel.findOne({ email });
+          if (!costumer) {
+            return res.json({ message: "Costumer not found!" });
+          }
+      
+          costumer.isVerified = true;
+          await costumer.save();
+      
+          res.clearCookie("verificationToken");
+      
+          res.json({ message: "Email verified successfully!" });
+        } catch (error) {
+          res.json({ message: "error" + error });
+        }
+      };
 
 
 

@@ -40,7 +40,7 @@ moviesController.insertMovies = async (req,res) => {
     }
     
     // Save everything in the DB.
-    const newMovie = new moviesModel({title, description,director,genre,year,duration})
+    const newMovie = new moviesModel({title, description,director,genre,year,duration,image: imageURL})
     await newMovie.save();
 
     res.json({message: "Movie saved! "})

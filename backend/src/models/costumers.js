@@ -27,6 +27,10 @@ const costumerSchema = new Schema(
             type: String,
             require: true
         }
+    },
+    {
+      timestamps: true,
+      strict: false,
     }
 );
 

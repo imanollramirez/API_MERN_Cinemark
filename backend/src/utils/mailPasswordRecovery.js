@@ -53,7 +53,7 @@ const HTMLRecoveryEmail = (code) => {
       <p>Utiliza el siguiente código para completar el proceso:</p>
       
       <div style="display: inline-block; background-color: #eeeeee; font-size: 24px; letter-spacing: 4px; padding: 15px 30px; margin: 20px 0; border-radius: 5px; font-weight: 600; font-family: 'Poppins', Arial, sans-serif;">
-        839247
+        ${code}
       </div>
       
       <p>Este código es válido por 20 minutos.</p>
