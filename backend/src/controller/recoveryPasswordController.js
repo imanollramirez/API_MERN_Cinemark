@@ -1,6 +1,7 @@
 import jsonwebtoken from "jsonwebtoken"; //Token
 import clientsModel from "../models/costumers.js";
 import employeesModel from "../models/employees.js";
+import bcryptjs from "bcryptjs";
 
 import { sendEmail, HTMLRecoveryEmail } from "../utils/mailPasswordRecovery.js";
 import { config } from "../config.js";
@@ -86,6 +87,47 @@ passwordRecoveryController.verifyCode = async (req, res) => {
     res.cookie("tokenRecoveryCode", newToken, { maxAge: 20 * 60 * 1000 });
 
     res.json({ message: "Code verified!" });
+  } catch (error) {
+    console.log("error" + error);
+  }
+};
+
+passwordRecoveryController.newPassword = async (req, res) => {
+  const { newPassword } = req.body;
+
+  try {
+
+    const token = req.cookies.tokenRecoveryCode;
+
+    const decoded = jsonwebtoken.verify(token, config.JWT.secret);
+
+    if (!decoded.verified) {
+      return res.json({ message: "Code not verified!" });
+    }
+
+    const { email, userType } = decoded;
+
+    const hashedPassword = await bcryptjs.hash(newPassword, 10);
+  
+    let updatedUser;
+
+    if (userType === "costumer") {
+      updatedUser = await clientsModel.findOneAndUpdate(
+        { email },
+        { password: hashedPassword },
+        { new: true }
+      );
+    } else if (userType === "employee") {
+      updatedUser = await employeesModel.findOneAndUpdate(
+        { email },
+        { password: hashedPassword },
+        { new: true }
+      );
+    }
+
+    res.clearCookie("tokenRecoveryCode");
+
+    res.json({ message: "Password updated!" });
   } catch (error) {
     console.log("error" + error);
   }
