@@ -1,6 +1,6 @@
 import jsonwebtoken from "jsonwebtoken"; //Token
-import clientsModel from "../models/customers.js";
-import employeesModel from "../models/employee.js";
+import clientsModel from "../models/costumers.js";
+import employeesModel from "../models/employees.js";
 
 import { sendEmail, HTMLRecoveryEmail } from "../utils/mailPasswordRecovery.js";
 import { config } from "../config.js";

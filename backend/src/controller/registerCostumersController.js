@@ -1,8 +1,10 @@
-// Importar el modelo
-import costumersModel from "../models/costumers.js";
-import bcryptjs from "bcryptjs"; //Encriptar
-import crypto from "crypto";
+//Importamos todas las librerias
 import jsonwebtoken from "jsonwebtoken"; // Token
+import bcryptjs from "bcryptjs"; // Encriptar
+import nodemailer from "nodemailer"; // Enviar correos
+import crypto from "crypto"; //Generar código
+
+import costumersModel from "../models/costumers.js";
 import { config } from "../config.js";
 
 const registerCostumersController = {};
