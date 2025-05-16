@@ -22,7 +22,7 @@ costumersController.insertCostumers = async (req,res) => {
 
 // DELETE
 costumersController.deleteCostumer = async (req, res) => {
-    const deleteCostumer = await costumersController.findByIdAndDelete(req.params.id);
+    const deleteCostumer = await costumersModel.findByIdAndDelete(req.params.id);
       if (!deleteCostumer) {
         return res.status(404).json({ message: "Costumer wasn't found!" });
       }
