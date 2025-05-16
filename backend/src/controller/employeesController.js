@@ -5,16 +5,16 @@ const employeesController = {};
 
 // SELECT 
 employeesController.getAllEmployees = async (req,res) => {  
-    const movies = await employeesController.find();
+    const movies = await employeeModel.find();
     res.json(movies);
 }
 
 // INSERT
 employeesController.insertEmployees = async (req,res) => {
-  const { name, email, password, telephone, address,dui } = req.body;
+  const { name, email, password, telephone, address,typeUser,hireDate,salary,dui } = req.body;
   
   // Save everything in the DB.
-  const newEmployee = new employeeModel({name, email, password, telephone, address,dui})
+  const newEmployee = new employeeModel({name, email, password, telephone, address,typeUser,hireDate,salary,dui})
   await newEmployee.save();
 
   res.json({message: "Employee saved! "})
@@ -32,12 +32,12 @@ employeesController.deleteEmployees = async (req, res) => {
     // UPDATE
     employeesController.updateEmployees = async (req, res) => {
       
-      const { name, email, password, telephone, address,dui } = req.body;
+      const { name, email, password, telephone, address,typeUser,hireDate,salary,dui } = req.body;
 
       await employeeModel.findByIdAndUpdate(
         req.params.id,
         {
-            name, email, password, telephone, address,dui 
+          name, email, password, telephone, address,typeUser,hireDate,salary,dui
         },
         { new: true }
       );

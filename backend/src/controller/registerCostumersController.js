@@ -1,6 +1,7 @@
 // Importar el modelo
 import costumersModel from "../models/costumers.js";
 import bcryptjs from "bcryptjs"; //Encriptar
+import crypto from "crypto";
 import jsonwebtoken from "jsonwebtoken"; // Token
 import { config } from "../config.js";
 

@@ -7,18 +7,7 @@ import { config } from "../config.js";
 const registerEmployeeController = {};
 
 registerEmployeeController.register = async(req, res)=> {
-    const {name, 
-        lastName, 
-        birthday,
-        email,
-        address,
-        password,
-        hireDate,
-        telephone,
-        dui,
-        isVerified,
-        issnumber,
-    } = req.body;
+    const { name, email, password, telephone, address,typeUser,hireDate,salary,dui } = req.body;
 
     try {
         const existEmployee = await employeeModel.findOne({email})
@@ -29,16 +18,7 @@ registerEmployeeController.register = async(req, res)=> {
         const passwordHash = await bcryptjs.hash(password, 10)
 
         const newEmployee = new employeeModel({name, 
-        lastName, 
-        birthday,
-        email,
-        address,
-        password: passwordHash,
-        hireDate,
-        telephone,
-        dui,
-        isVerified,
-        issnumber,
+            name, email, password: passwordHash, telephone, address,typeUser,hireDate,salary,dui
         })
 
         await newEmployee.save();
